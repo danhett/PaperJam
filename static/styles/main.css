@@ -1,0 +1,19 @@
+body {
+  font-family: sans-serif;
+  background-color: #222;
+  margin: 0px;
+  background-image: url("../assets/bg.png");
+  overflow: hidden
+}
+
+#baseImage {
+  position: fixed;
+  z-index: -1000;
+}
+
+#gameholder {
+  position: absolute;
+  top:20px; left:235px; bottom: 0; right: 0;
+
+  transform: perspective( 1000px ) rotateX( 8deg );
+}
