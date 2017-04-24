@@ -1,5 +1,10 @@
-# Game Jam Framework
-A skeleton ES6 Phaser project for game jam usage. Created and shared in order to qualify for the Ludum Dare compo, and as a useful starting point for general quick-fire games projects.
+# Paper Jam!
+A completely hand-drawn platform game, created in not a very large amount of time, for the Ludum Dare compo.
+
+![game image](http://imgur.com/xcPRBSi.gif)
+
+More info abou the game here: https://ldjam.com/events/ludum-dare/38/$24835
+Play it here: https://danhett.itch.io/paper-jam
 
 ## Setup
 To set up, just do `npm install` (you might need `sudo`) in the root directory and wait for the million billion dependencies to download. Node, innit.
