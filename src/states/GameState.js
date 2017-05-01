@@ -3,6 +3,8 @@ import Maths from 'core/Maths';
 
 var currentLevel = 0;
 var maxLevels = 5;
+var lastDir = "right";
+var dead = false;
 
 class GameState extends Phaser.State {
   create() {
@@ -39,6 +41,9 @@ class GameState extends Phaser.State {
     this.setupEmitter();
     this.addControls();
     this.createReadouts();
+
+    dead = false;
+    lastDir = "right";``
   }
 
   setupSound() {
@@ -264,11 +269,17 @@ class GameState extends Phaser.State {
   //  SHOOTING
   //------------------------------------------------------------------------
   shootLaser() {
-    if(this.player.body.velocity.x < 0 || this.cursors.left.isDown) {
+    if(this.player.body.velocity.x < 0)
+      lastDir = "left";
+    else if(this.player.body.velocity.x > 0)
+      lastDir = "right"
+
+    if(lastDir == "left") {
       this.bulletVel = -1000;
       this.spawnPos = this.player.x - 50;
       this.fireShot()
-    } else if(this.player.body.velocity.x > 0 || this.cursors.right.isDown) {
+    }
+    else if(lastDir == "right") {
       this.bulletVel = 1000;
       this.spawnPos = this.player.x + 50;
       this.fireShot();
@@ -276,16 +287,18 @@ class GameState extends Phaser.State {
   }
 
   fireShot() {
-    var bullet = this.bullets.create(this.spawnPos, this.player.y, this.getBullet());
-    bullet.anchor.set(0, 0.5);
-    bullet.scale.set(0.5, 0.5);
-    this.game.physics.enable(bullet, Phaser.Physics.ARCADE);
-    bullet.body.velocity.x = this.bulletVel;
+    if(!dead) {
+      var bullet = this.bullets.create(this.spawnPos, this.player.y, this.getBullet());
+      bullet.anchor.set(0, 0.5);
+      bullet.scale.set(0.5, 0.5);
+      this.game.physics.enable(bullet, Phaser.Physics.ARCADE);
+      bullet.body.velocity.x = this.bulletVel;
 
-    bullet.checkWorldBounds = true;
-    bullet.events.onOutOfBounds.add(this.killBullet, this);
+      bullet.checkWorldBounds = true;
+      bullet.events.onOutOfBounds.add(this.killBullet, this);
 
-    this.getShootSound().play();
+      this.getShootSound().play();
+    }
   }
 
   getBullet() {
@@ -414,6 +427,8 @@ class GameState extends Phaser.State {
 
     this.loseSound.play();
     this.game.time.events.add(Phaser.Timer.SECOND * 2, this.resetGame, this);
+
+    dead = true;
   }
 
   bounceEnemy(enemy, wall) {
